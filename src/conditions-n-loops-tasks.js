@@ -442,39 +442,80 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-// Implenent 'sort choice' because 'fast sort' will result in an error
-function sortByAsc(arr) {
-  // const temp = arr;
-  // for (let i = 0; i < arr.length - 1; i += 1) {
-  //   let index = i;
-  //   for (let j = i + 1; j < arr.length; j += 1) {
-  //     if (arr[j] < arr[index]) {
-  //       index = j;
-  //     }
-  //   }
+// Implenent 'sort choice' and 'fast sort' but they will result in an error
 
-  //   const value = arr[i];
-  //   temp[i] = temp[index];
-  //   temp[index] = value;
-  // }
-  // return temp;
+// if (arr.length < 2) return arr;
+// const pivot = arr[0];
+// const left = [];
+// const right = [];
+// let countLeft = 0;
+// let countRight = 0;
+// for (let i = 1; i < arr.length; i += 1) {
+//   if (pivot > arr[i]) {
+//     left[countLeft] = arr[i];
+//     countLeft += 1;
+//   } else {
+//     right[countRight] = arr[i];
+//     countRight += 1;
+//   }
+// }
+// return [...sortByAsc(left), pivot, ...sortByAsc(right)];
 
-  if (arr.length < 2) return arr;
+// const temp = arr;
+//   for (let i = 0; i < arr.length - 1; i += 1) {
+//     let index = i;
+//     for (let j = i + 1; j < arr.length; j += 1) {
+//       if (arr[j] < arr[index]) {
+//         index = j;
+//       }
+//     }
+//     const value = arr[i];
+//     temp[i] = temp[index];
+//     temp[index] = value;
+//   }
+//   return temp;
 
-  const pivot = arr[0];
+// Implement Heap Sort
+function buildHeap(arr, size, top) {
+  let largest = top;
+  const left = 2 * top + 1;
+  const right = 2 * top + 2;
+  const temp = arr;
 
-  let left = [];
-  let right = [];
-
-  for (let i = 1; i < arr.length; i += 1) {
-    if (pivot > arr[i]) {
-      left = [...left, arr[i]];
-    } else {
-      right = [...right, arr[i]];
-    }
+  if (left < size && arr[left] > arr[largest]) {
+    largest = left;
   }
 
-  return [...sortByAsc(left), pivot, ...sortByAsc(right)];
+  if (right < size && arr[right] > arr[largest]) {
+    largest = right;
+  }
+
+  if (largest !== top) {
+    const t = temp[top];
+    temp[top] = temp[largest];
+    temp[largest] = t;
+
+    buildHeap(temp, size, largest);
+  }
+}
+
+function sortByAsc(arr) {
+  const size = arr.length;
+  const temp = arr;
+
+  for (let top = Math.floor(size / 2) - 1; top >= 0; top -= 1) {
+    buildHeap(temp, size, top);
+  }
+
+  for (let i = size - 1; i > 0; i -= 1) {
+    const t = temp[0];
+    temp[0] = temp[i];
+    temp[i] = t;
+
+    buildHeap(temp, i, 0);
+  }
+
+  return temp;
 }
 
 /**
