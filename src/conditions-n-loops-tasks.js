@@ -444,20 +444,37 @@ function rotateMatrix(matrix) {
  */
 // Implenent 'sort choice' because 'fast sort' will result in an error
 function sortByAsc(arr) {
-  const temp = arr;
-  for (let i = 0; i < arr.length - 1; i += 1) {
-    let index = i;
-    for (let j = i + 1; j < arr.length; j += 1) {
-      if (arr[j] < arr[index]) {
-        index = j;
-      }
-    }
+  // const temp = arr;
+  // for (let i = 0; i < arr.length - 1; i += 1) {
+  //   let index = i;
+  //   for (let j = i + 1; j < arr.length; j += 1) {
+  //     if (arr[j] < arr[index]) {
+  //       index = j;
+  //     }
+  //   }
 
-    const value = arr[i];
-    temp[i] = temp[index];
-    temp[index] = value;
+  //   const value = arr[i];
+  //   temp[i] = temp[index];
+  //   temp[index] = value;
+  // }
+  // return temp;
+
+  if (arr.length < 2) return arr;
+
+  const pivot = arr[0];
+
+  let left = [];
+  let right = [];
+
+  for (let i = 1; i < arr.length; i += 1) {
+    if (pivot > arr[i]) {
+      left = [...left, arr[i]];
+    } else {
+      right = [...right, arr[i]];
+    }
   }
-  return temp;
+
+  return [...sortByAsc(left), pivot, ...sortByAsc(right)];
 }
 
 /**
